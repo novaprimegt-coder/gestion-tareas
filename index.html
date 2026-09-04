@@ -18,7 +18,7 @@
   <div class="bar"><i></i></div>
   <button class="retry" id="retry" type="button">Reintentar</button>
   <div class="detail" id="detail"></div>
-  <div class="fine">Carga segura por HTTPS · integridad verificada antes de iniciar</div>
+  <div class="fine">Carga segura por HTTPS · compatibilidad Android WebView</div>
 </div></div>
 <script>
 (()=>{
@@ -32,52 +32,32 @@
   const parts=['p0.txt','p1.txt','p2.txt','q0.txt','q1.txt','q2.txt','q3.txt','q4.txt','q5.txt','q6.txt','q7.txt','q8.txt','q9.txt','q10.txt','q11.txt','q12.txt','q13.txt'];
   const expectedLength=190428;
   const expectedHash='f4fc8e589bb9ac8f6ecb1bf2d8c071c1463f720ba66d82296055914ec67cab50';
+  const exportPatch=atob('PHNjcmlwdD4KKGZ1bmN0aW9uKCl7CiAgJ3VzZSBzdHJpY3QnOwogIHRyeXsKICAgIGNvbnN0IF9fdGZPcmlnaW5hbERvd25sb2FkUm91dGluZUpzb24gPSAodHlwZW9mIHRmRG93bmxvYWRSb3V0aW5lSnNvbiA9PT0gJ2Z1bmN0aW9uJykgPyB0ZkRvd25sb2FkUm91dGluZUpzb24gOiBudWxsOwoKICAgIGZ1bmN0aW9uIHRmVjk5SXNBcHBXZWJWaWV3KCl7CiAgICAgIHRyeXsKICAgICAgICBjb25zdCB1YT1TdHJpbmcobmF2aWdhdG9yLnVzZXJBZ2VudHx8JycpOwogICAgICAgIHJldHVybiAvQW5kcm9pZC9pLnRlc3QodWEpJiYoLztccyp3dlwpL2kudGVzdCh1YSl8fC9WZXJzaW9uXC80XC4wL2kudGVzdCh1YSl8fC9BcHBDcmVhdG9yMjQvaS50ZXN0KHVhKSk7CiAgICAgIH1jYXRjaChfKXtyZXR1cm4gZmFsc2U7fQogICAgfQoKICAgIGFzeW5jIGZ1bmN0aW9uIHRmVjk5U2hhcmVKc29uKGZpbGVuYW1lLGpzb24pewogICAgICB0cnl7CiAgICAgICAgaWYodHlwZW9mIEZpbGUhPT0nZnVuY3Rpb24nfHx0eXBlb2YgbmF2aWdhdG9yLnNoYXJlIT09J2Z1bmN0aW9uJ3x8dHlwZW9mIG5hdmlnYXRvci5jYW5TaGFyZSE9PSdmdW5jdGlvbicpcmV0dXJuIGZhbHNlOwogICAgICAgIGxldCBmaWxlPW5ldyBGaWxlKFtqc29uXSxmaWxlbmFtZSx7dHlwZTonYXBwbGljYXRpb24vanNvbicsbGFzdE1vZGlmaWVkOkRhdGUubm93KCl9KTsKICAgICAgICBpZighbmF2aWdhdG9yLmNhblNoYXJlKHtmaWxlczpbZmlsZV19KSl7CiAgICAgICAgICBmaWxlPW5ldyBGaWxlKFtqc29uXSxmaWxlbmFtZSx7dHlwZTondGV4dC9wbGFpbicsbGFzdE1vZGlmaWVkOkRhdGUubm93KCl9KTsKICAgICAgICAgIGlmKCFuYXZpZ2F0b3IuY2FuU2hhcmUoe2ZpbGVzOltmaWxlXX0pKXJldHVybiBmYWxzZTsKICAgICAgICB9CiAgICAgICAgYXdhaXQgbmF2aWdhdG9yLnNoYXJlKHtmaWxlczpbZmlsZV0sdGl0bGU6J1J1dGluYSBUYXNrRmxvdycsdGV4dDonQXJjaGl2byBKU09OIGRlIGjDoWJpdG9zIHkgcnV0aW5hcyBkZSBUYXNrRmxvdy4nfSk7CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICAgIH1jYXRjaChlcnJvcil7CiAgICAgICAgY29uc29sZS53YXJuKCdUYXNrRmxvdyBBbmRyb2lkIHNoYXJlIGZhbGxiYWNrJyxlcnJvcik7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICB9CiAgICB9CgogICAgYXN5bmMgZnVuY3Rpb24gdGZWOTlIdHRwc0pzb25Eb3dubG9hZChmaWxlbmFtZSxqc29uKXsKICAgICAgdHJ5ewogICAgICAgIGlmKCEoJ3NlcnZpY2VXb3JrZXInIGluIG5hdmlnYXRvcil8fCF3aW5kb3cuaXNTZWN1cmVDb250ZXh0fHx0eXBlb2YgTWVzc2FnZUNoYW5uZWwhPT0nZnVuY3Rpb24nKXJldHVybiBmYWxzZTsKICAgICAgICBjb25zdCByZWdpc3RyYXRpb249YXdhaXQgbmF2aWdhdG9yLnNlcnZpY2VXb3JrZXIucmVnaXN0ZXIoJy4vdGFza2Zsb3ctc3cuanM/dj0yJyx7c2NvcGU6Jy4vJyx1cGRhdGVWaWFDYWNoZTonbm9uZSd9KTsKICAgICAgICBhd2FpdCBuYXZpZ2F0b3Iuc2VydmljZVdvcmtlci5yZWFkeTsKICAgICAgICBsZXQgd29ya2VyPXJlZ2lzdHJhdGlvbi5hY3RpdmV8fHJlZ2lzdHJhdGlvbi53YWl0aW5nfHxyZWdpc3RyYXRpb24uaW5zdGFsbGluZzsKICAgICAgICBpZighd29ya2VyKXJldHVybiBmYWxzZTsKICAgICAgICBpZih3b3JrZXIuc3RhdGUmJndvcmtlci5zdGF0ZSE9PSdhY3RpdmF0ZWQnKXsKICAgICAgICAgIGF3YWl0IG5ldyBQcm9taXNlKHJlc29sdmU9PnsKICAgICAgICAgICAgbGV0IGRvbmU9ZmFsc2U7CiAgICAgICAgICAgIGNvbnN0IGZpbmlzaD0oKT0+e2lmKGRvbmUpcmV0dXJuO2RvbmU9dHJ1ZTtyZXNvbHZlKCk7fTsKICAgICAgICAgICAgY29uc3QgdGltZXI9c2V0VGltZW91dChmaW5pc2gsMzAwMCk7CiAgICAgICAgICAgIHdvcmtlci5hZGRFdmVudExpc3RlbmVyKCdzdGF0ZWNoYW5nZScsKCk9PntpZih3b3JrZXIuc3RhdGU9PT0nYWN0aXZhdGVkJyl7Y2xlYXJUaW1lb3V0KHRpbWVyKTtmaW5pc2goKTt9fSk7CiAgICAgICAgICB9KTsKICAgICAgICAgIHdvcmtlcj1yZWdpc3RyYXRpb24uYWN0aXZlfHxyZWdpc3RyYXRpb24ud2FpdGluZ3x8d29ya2VyOwogICAgICAgIH0KICAgICAgICBjb25zdCBpZD0ndGYtJytEYXRlLm5vdygpLnRvU3RyaW5nKDM2KSsnLScrTWF0aC5yYW5kb20oKS50b1N0cmluZygzNikuc2xpY2UoMiwxMCk7CiAgICAgICAgY29uc3QgcmVzdWx0PWF3YWl0IG5ldyBQcm9taXNlKHJlc29sdmU9PnsKICAgICAgICAgIGNvbnN0IGNoYW5uZWw9bmV3IE1lc3NhZ2VDaGFubmVsKCk7CiAgICAgICAgICBjb25zdCB0aW1lcj1zZXRUaW1lb3V0KCgpPT5yZXNvbHZlKG51bGwpLDM1MDApOwogICAgICAgICAgY2hhbm5lbC5wb3J0MS5vbm1lc3NhZ2U9ZXZlbnQ9PntjbGVhclRpbWVvdXQodGltZXIpO3Jlc29sdmUoZXZlbnQuZGF0YXx8bnVsbCk7fTsKICAgICAgICAgIHdvcmtlci5wb3N0TWVzc2FnZSh7dHlwZTonVEZfRVhQT1JUX0pTT04nLGlkOmlkLGZpbGVuYW1lOmZpbGVuYW1lLGpzb246anNvbn0sW2NoYW5uZWwucG9ydDJdKTsKICAgICAgICB9KTsKICAgICAgICBpZighcmVzdWx0fHxyZXN1bHQub2shPT10cnVlfHwhcmVzdWx0LnVybClyZXR1cm4gZmFsc2U7CiAgICAgICAgY29uc3QgYT1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJyk7CiAgICAgICAgYS5ocmVmPXJlc3VsdC51cmw7CiAgICAgICAgYS5kb3dubG9hZD1maWxlbmFtZTsKICAgICAgICBhLnJlbD0nbm9vcGVuZXInOwogICAgICAgIGEuc3R5bGUuZGlzcGxheT0nbm9uZSc7CiAgICAgICAgZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTsKICAgICAgICBhLmNsaWNrKCk7CiAgICAgICAgc2V0VGltZW91dCgoKT0+e3RyeXthLnJlbW92ZSgpO31jYXRjaChfKXt9fSwxNTAwKTsKICAgICAgICByZXR1cm4gdHJ1ZTsKICAgICAgfWNhdGNoKGVycm9yKXsKICAgICAgICBjb25zb2xlLndhcm4oJ1Rhc2tGbG93IEhUVFBTIGV4cG9ydCBmYWxsYmFjaycsZXJyb3IpOwogICAgICAgIHJldHVybiBmYWxzZTsKICAgICAgfQogICAgfQoKICAgIGFzeW5jIGZ1bmN0aW9uIHRmVjk5QmxvYkpzb25Eb3dubG9hZChmaWxlbmFtZSxqc29uKXsKICAgICAgbGV0IHVybD1udWxsLGE9bnVsbDsKICAgICAgdHJ5ewogICAgICAgIGNvbnN0IGJsb2I9bmV3IEJsb2IoW2pzb25dLHt0eXBlOidhcHBsaWNhdGlvbi9qc29uO2NoYXJzZXQ9dXRmLTgnfSk7CiAgICAgICAgdXJsPVVSTC5jcmVhdGVPYmplY3RVUkwoYmxvYik7CiAgICAgICAgYT1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJyk7CiAgICAgICAgYS5ocmVmPXVybDthLmRvd25sb2FkPWZpbGVuYW1lO2EucmVsPSdub29wZW5lcic7YS5zdHlsZS5kaXNwbGF5PSdub25lJzsKICAgICAgICBkb2N1bWVudC5ib2R5LmFwcGVuZENoaWxkKGEpO2EuY2xpY2soKTthLnJlbW92ZSgpOwogICAgICAgIHNldFRpbWVvdXQoKCk9Pnt0cnl7VVJMLnJldm9rZU9iamVjdFVSTCh1cmwpO31jYXRjaChfKXt9fSw2MDAwMCk7CiAgICAgICAgcmV0dXJuIHRydWU7CiAgICAgIH1jYXRjaChlcnJvcil7CiAgICAgICAgY29uc29sZS53YXJuKCdUYXNrRmxvdyBCbG9iIGV4cG9ydCBmYWxsYmFjaycsZXJyb3IpOwogICAgICAgIHRyeXtpZihhJiZhLnBhcmVudE5vZGUpYS5yZW1vdmUoKTt9Y2F0Y2goXyl7fQogICAgICAgIHRyeXtpZih1cmwpVVJMLnJldm9rZU9iamVjdFVSTCh1cmwpO31jYXRjaChfKXt9CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICB9CiAgICB9CgogICAgdGZEb3dubG9hZFJvdXRpbmVKc29uID0gYXN5bmMgZnVuY3Rpb24oZmlsZW5hbWUscGF5bG9hZCl7CiAgICAgIGNvbnN0IGpzb249SlNPTi5zdHJpbmdpZnkocGF5bG9hZCxudWxsLDIpOwogICAgICBjb25zdCBlbWJlZGRlZD10ZlY5OUlzQXBwV2ViVmlldygpOwoKICAgICAgaWYoIWVtYmVkZGVkJiZ0eXBlb2YgX190Zk9yaWdpbmFsRG93bmxvYWRSb3V0aW5lSnNvbj09PSdmdW5jdGlvbicpewogICAgICAgIHJldHVybiBfX3RmT3JpZ2luYWxEb3dubG9hZFJvdXRpbmVKc29uKGZpbGVuYW1lLHBheWxvYWQpOwogICAgICB9CgogICAgICAvLyBFbiBBcHBDcmVhdG9yMjQvQW5kcm9pZCBXZWJWaWV3IG5vIHVzYW1vcyBzaG93U2F2ZUZpbGVQaWNrZXI6IHB1ZWRlIGRldm9sdmVyCiAgICAgIC8vIEFib3J0RXJyb3IgYXVucXVlIGVsIHVzdWFyaW8gbm8gaGF5YSBjYW5jZWxhZG8gcmVhbG1lbnRlLgogICAgICBpZihhd2FpdCB0ZlY5OVNoYXJlSnNvbihmaWxlbmFtZSxqc29uKSlyZXR1cm4gdHJ1ZTsKICAgICAgaWYoYXdhaXQgdGZWOTlIdHRwc0pzb25Eb3dubG9hZChmaWxlbmFtZSxqc29uKSlyZXR1cm4gdHJ1ZTsKICAgICAgaWYoYXdhaXQgdGZWOTlCbG9iSnNvbkRvd25sb2FkKGZpbGVuYW1lLGpzb24pKXJldHVybiB0cnVlOwoKICAgICAgdHJ5ewogICAgICAgIGNvbnN0IGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnYScpOwogICAgICAgIGEuaHJlZj0nZGF0YTphcHBsaWNhdGlvbi9qc29uO2NoYXJzZXQ9dXRmLTgsJytlbmNvZGVVUklDb21wb25lbnQoanNvbik7CiAgICAgICAgYS5kb3dubG9hZD1maWxlbmFtZTthLnJlbD0nbm9vcGVuZXInO2Euc3R5bGUuZGlzcGxheT0nbm9uZSc7CiAgICAgICAgZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTthLmNsaWNrKCk7YS5yZW1vdmUoKTsKICAgICAgICByZXR1cm4gdHJ1ZTsKICAgICAgfWNhdGNoKGVycm9yKXsKICAgICAgICBjb25zb2xlLmVycm9yKCdUYXNrRmxvdyBBbmRyb2lkIEpTT04gZXhwb3J0IGZhaWxlZCcsZXJyb3IpOwogICAgICAgIHJldHVybiBmYWxzZTsKICAgICAgfQogICAgfTsKICB9Y2F0Y2goZXJyb3IpewogICAgY29uc29sZS5lcnJvcignVGFza0Zsb3cgZXhwb3J0IGNvbXBhdGliaWxpdHkgcGF0Y2ggZmFpbGVkJyxlcnJvcik7CiAgfQp9KSgpOwo8L3NjcmlwdD4=');
   const hex=buf=>Array.from(new Uint8Array(buf),b=>b.toString(16).padStart(2,'0')).join('');
-  const exportMobileNeedle="if(typeof window.showSaveFilePicker==='function'){";
-  const exportMobileFix="if(typeof window.showSaveFilePicker==='function'&&!/Android|iPhone|iPad|iPod|Mobile/i.test(String(navigator.userAgent||''))){";
-  const exportAbortNeedle="catch(error){if(error&&error.name==='AbortError')return null;console.warn('TaskFlow save picker fallback',error);}";
-  const exportAbortFix="catch(error){console.warn('TaskFlow save picker fallback',error);}";
   async function boot(){
-    bootEl.classList.remove('error');
-    retryEl.disabled=true;
-    detailEl.textContent='';
-    msgEl.textContent='Descargando TaskFlow…';
+    bootEl.classList.remove('error');retryEl.disabled=true;detailEl.textContent='';msgEl.textContent='Descargando TaskFlow…';
     try{
-      const responses=await Promise.all(parts.map(async(name)=>{
-        const response=await fetch(base+name,{cache:'no-store',mode:'cors'});
-        if(!response.ok) throw new Error('No se pudo obtener '+name+' ('+response.status+')');
-        return (await response.text()).trim();
-      }));
+      const responses=await Promise.all(parts.map(async name=>{const response=await fetch(base+name,{cache:'no-store',mode:'cors'});if(!response.ok)throw new Error('No se pudo obtener '+name+' ('+response.status+')');return (await response.text()).trim();}));
       const payload=responses.join('');
-      if(payload.length!==expectedLength) throw new Error('Paquete incompleto: '+payload.length+' / '+expectedLength);
+      if(payload.length!==expectedLength)throw new Error('Paquete incompleto: '+payload.length+' / '+expectedLength);
       msgEl.textContent='Verificando integridad…';
-      if(!globalThis.crypto?.subtle) throw new Error('SHA-256 no disponible en este navegador');
+      if(!globalThis.crypto?.subtle)throw new Error('SHA-256 no disponible en este navegador');
       const digest=hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload)));
-      if(digest!==expectedHash) throw new Error('Integridad inválida: '+digest.slice(0,16));
-      if(typeof DecompressionStream!=='function') throw new Error('DecompressionStream no disponible. Actualiza Chrome/Android System WebView.');
-      msgEl.textContent='Aplicando corrección de exportación…';
-      const bin=atob(payload);
-      const bytes=new Uint8Array(bin.length);
-      for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+      if(digest!==expectedHash)throw new Error('Integridad inválida: '+digest.slice(0,16));
+      if(typeof DecompressionStream!=='function')throw new Error('DecompressionStream no disponible. Actualiza Chrome/Android System WebView.');
+      const bin=atob(payload),bytes=new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
       const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
       let html=await new Response(stream).text();
-      if(html.length<600000||!html.includes('<html')||!html.includes('TaskFlow')) throw new Error('Contenido reconstruido inválido');
-      if(!html.includes(exportMobileNeedle)||!html.includes(exportAbortNeedle)) throw new Error('No se pudo aplicar la corrección de exportación JSON.');
-      html=html.replace(exportMobileNeedle,exportMobileFix).replace(exportAbortNeedle,exportAbortFix);
-      msgEl.textContent='Iniciando TaskFlow…';
-      document.open();
-      document.write(html);
-      document.close();
+      if(html.length<600000||!html.includes('<html')||!html.includes('TaskFlow'))throw new Error('Contenido reconstruido inválido');
+      msgEl.textContent='Aplicando compatibilidad de exportación…';
+      if(html.includes('</body>'))html=html.replace('</body>',exportPatch+'</body>');else html+=exportPatch;
+      document.open();document.write(html);document.close();
     }catch(error){
-      console.error('TaskFlow boot error:',error);
-      bootEl.classList.add('error');
-      msgEl.textContent='No se pudo iniciar TaskFlow. Toca Reintentar.';
-      detailEl.textContent=String(error&&error.message?error.message:error);
-      retryEl.disabled=false;
+      console.error('TaskFlow boot error:',error);bootEl.classList.add('error');msgEl.textContent='No se pudo iniciar TaskFlow. Toca Reintentar.';detailEl.textContent=String(error&&error.message?error.message:error);retryEl.disabled=false;
     }
   }
-  retryEl.addEventListener('click',boot);
-  boot();
+  retryEl.addEventListener('click',boot);boot();
 })();
 </script>
 </body>
