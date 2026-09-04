@@ -33,6 +33,10 @@
   const expectedLength=190428;
   const expectedHash='f4fc8e589bb9ac8f6ecb1bf2d8c071c1463f720ba66d82296055914ec67cab50';
   const hex=buf=>Array.from(new Uint8Array(buf),b=>b.toString(16).padStart(2,'0')).join('');
+  const exportMobileNeedle="if(typeof window.showSaveFilePicker==='function'){";
+  const exportMobileFix="if(typeof window.showSaveFilePicker==='function'&&!/Android|iPhone|iPad|iPod|Mobile/i.test(String(navigator.userAgent||''))){";
+  const exportAbortNeedle="catch(error){if(error&&error.name==='AbortError')return null;console.warn('TaskFlow save picker fallback',error);}";
+  const exportAbortFix="catch(error){console.warn('TaskFlow save picker fallback',error);}";
   async function boot(){
     bootEl.classList.remove('error');
     retryEl.disabled=true;
@@ -51,13 +55,16 @@
       const digest=hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload)));
       if(digest!==expectedHash) throw new Error('Integridad inválida: '+digest.slice(0,16));
       if(typeof DecompressionStream!=='function') throw new Error('DecompressionStream no disponible. Actualiza Chrome/Android System WebView.');
-      msgEl.textContent='Iniciando TaskFlow…';
+      msgEl.textContent='Aplicando corrección de exportación…';
       const bin=atob(payload);
       const bytes=new Uint8Array(bin.length);
       for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
       const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const html=await new Response(stream).text();
+      let html=await new Response(stream).text();
       if(html.length<600000||!html.includes('<html')||!html.includes('TaskFlow')) throw new Error('Contenido reconstruido inválido');
+      if(!html.includes(exportMobileNeedle)||!html.includes(exportAbortNeedle)) throw new Error('No se pudo aplicar la corrección de exportación JSON.');
+      html=html.replace(exportMobileNeedle,exportMobileFix).replace(exportAbortNeedle,exportAbortFix);
+      msgEl.textContent='Iniciando TaskFlow…';
       document.open();
       document.write(html);
       document.close();
