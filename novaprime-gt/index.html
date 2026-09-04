@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030812">
+<title>NovaPrime GT · Iniciando</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#030812;color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}body{min-height:100dvh}.boot{min-height:100dvh;display:grid;place-items:center;padding:28px 20px;background:radial-gradient(circle at 20% 10%,rgba(0,215,255,.12),transparent 34%),radial-gradient(circle at 80% 85%,rgba(123,108,255,.10),transparent 30%),#030812}.card{width:min(440px,100%);text-align:center}.mark{width:76px;height:76px;margin:0 auto 18px;border-radius:23px;display:grid;place-items:center;border:1px solid rgba(0,215,255,.28);background:linear-gradient(145deg,rgba(7,35,55,.96),rgba(7,16,30,.99));box-shadow:0 22px 55px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.03)}.mark svg{width:40px;height:40px;color:#00d7ff}.logo{font-size:32px;line-height:1;font-weight:950;letter-spacing:-1.2px;background:linear-gradient(90deg,#00e6ff,#3ebcff 55%,#8a79ff);-webkit-background-clip:text;background-clip:text;color:transparent}.version{margin-top:9px;font-size:11px;font-weight:850;letter-spacing:.17em;text-transform:uppercase;color:#8095b5}.msg{margin-top:20px;color:#b8c8de;font-size:14px;line-height:1.5}.bar{height:5px;border-radius:999px;background:#0b1728;overflow:hidden;margin:24px auto 0;max-width:310px}.bar>i{display:block;height:100%;width:42%;border-radius:inherit;background:linear-gradient(90deg,#00e2ff,#568cff);animation:move .9s ease-in-out infinite alternate}@keyframes move{from{transform:translateX(-18%)}to{transform:translateX(160%)}}.retry{display:none;margin:20px auto 0;border:1px solid rgba(0,215,255,.32);border-radius:14px;padding:12px 18px;background:#0a2635;color:#72eaff;font-weight:850;font-size:14px;cursor:pointer}.error .bar{display:none}.error .retry{display:inline-flex}.detail{display:none;margin:12px auto 0;max-width:390px;color:#7f91ad;font-size:10px;line-height:1.5;word-break:break-word}.error .detail{display:block}.fine{margin-top:14px;font-size:10px;color:#5e708d}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="card">
+  <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v10H4z"/><path d="M7 10h5M7 13h8"/><circle cx="18" cy="5" r="2"/></svg></div>
+  <div class="logo">NovaPrime GT</div>
+  <div class="version">v11.24 · carga segura</div>
+  <div class="msg" id="msg">Preparando la tienda…</div>
+  <div class="bar"><i></i></div>
+  <button class="retry" id="retry" type="button">Reintentar</button>
+  <div class="detail" id="detail"></div>
+  <div class="fine">GitHub Pages · HTTPS · integridad SHA-256</div>
+</div></div>
+<script>
+(()=>{
+  'use strict';
+  const bootEl=document.getElementById('boot');
+  const msgEl=document.getElementById('msg');
+  const detailEl=document.getElementById('detail');
+  const retryEl=document.getElementById('retry');
+  const ref='0b1519fb02603d4d838bce1bcb1691635de548d5';
+  const base='https://raw.githubusercontent.com/novaprimegt-coder/gestion-tareas/'+ref+'/novaprime-gt-v11-24/';
+  const parts=['p00.txt','p01.txt','p02.txt','p03.txt','p04.txt','p05.txt','p06.txt'];
+  const expectedBytes=1351125;
+  const expectedHash='71c7f0e7faa1ae682cb59615b5e09e7671b67ccfc736eaffaddbeb4bf0933d03';
+  const hex=buf=>Array.from(new Uint8Array(buf),b=>b.toString(16).padStart(2,'0')).join('');
+  async function boot(){
+    bootEl.classList.remove('error');
+    retryEl.disabled=true;
+    detailEl.textContent='';
+    msgEl.textContent='Descargando NovaPrime GT…';
+    try{
+      if(typeof DecompressionStream!=='function') throw new Error('Este navegador necesita una versión reciente de Chrome/Android System WebView.');
+      if(!globalThis.crypto?.subtle) throw new Error('SHA-256 no está disponible en este navegador.');
+      const chunks=await Promise.all(parts.map(async name=>{
+        const response=await fetch(base+name,{cache:'no-store',mode:'cors'});
+        if(!response.ok) throw new Error('No se pudo obtener '+name+' ('+response.status+')');
+        return (await response.text()).trim();
+      }));
+      const payload=chunks.join('').replace(/\s+/g,'');
+      msgEl.textContent='Reconstruyendo el sistema…';
+      const bin=atob(payload);
+      const compressed=new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) compressed[i]=bin.charCodeAt(i);
+      const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
+      const htmlBuffer=await new Response(stream).arrayBuffer();
+      if(htmlBuffer.byteLength!==expectedBytes) throw new Error('Archivo incompleto: '+htmlBuffer.byteLength+' / '+expectedBytes+' bytes');
+      msgEl.textContent='Verificando integridad…';
+      const digest=hex(await crypto.subtle.digest('SHA-256',htmlBuffer));
+      if(digest!==expectedHash) throw new Error('La verificación SHA-256 no coincide.');
+      const html=new TextDecoder('utf-8').decode(htmlBuffer);
+      if(!/^\s*<!DOCTYPE html>/i.test(html)||!html.includes('NovaPrime GT')||!/<\/html>\s*$/i.test(html)) throw new Error('El HTML reconstruido no es válido.');
+      msgEl.textContent='Iniciando NovaPrime GT…';
+      document.open();
+      document.write(html);
+      document.close();
+    }catch(error){
+      console.error('NovaPrime GT boot error:',error);
+      bootEl.classList.add('error');
+      msgEl.textContent='No se pudo iniciar NovaPrime GT. Toca Reintentar.';
+      detailEl.textContent=String(error&&error.message?error.message:error);
+      retryEl.disabled=false;
+    }
+  }
+  retryEl.addEventListener('click',boot);
+  boot();
+})();
+</script>
+</body>
+</html>
