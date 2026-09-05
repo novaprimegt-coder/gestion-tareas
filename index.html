@@ -16,7 +16,7 @@
 <div class="boot" id="boot"><div class="card">
   <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14v12H5z"/><path d="M8 9h8M8 13h5"/><path d="m16 16 1.5 1.5L20 15"/></svg></div>
   <div class="logo">TaskFlow</div>
-  <div class="version">V99 · menú actualizado</div>
+  <div class="version">V100 · menú estable</div>
   <div class="msg" id="msg">Preparando el sistema…</div>
   <div class="bar"><i></i></div>
   <button class="retry" id="retry" type="button">Reintentar</button>
@@ -36,6 +36,19 @@
   const expectedLength=190428;
   const expectedHash='f4fc8e589bb9ac8f6ecb1bf2d8c071c1463f720ba66d82296055914ec67cab50';
   const hex=buf=>Array.from(new Uint8Array(buf),b=>b.toString(16).padStart(2,'0')).join('');
+  const noAdsButton=`<a class="quick-action-btn" id="btnNoAds" href="http://action_search" aria-label="Eliminar anuncios" role="button">
+      <span class="quick-action-icon noads" aria-hidden="true">
+        <svg class="tf-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="3"/>
+          <path d="M7 15V9l2.2 6V9"/>
+          <path d="M13 9v6h1.7c1.8 0 3.3-1.3 3.3-3s-1.5-3-3.3-3H13Z"/>
+          <path d="M4 4l16 16"/>
+        </svg>
+      </span>
+      <span>Eliminar anuncios</span>
+    </a>`;
+  const injectedStyle='<style id="tf-v100-actions">.tf-v91-actions-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.tf-v91-actions-grid .quick-action-btn{width:100%!important;max-width:none!important;text-decoration:none!important}.tf-v91-actions-grid .quick-action-icon.noads{color:#ff9b5a!important;background:rgba(255,138,43,.12)!important;border:1px solid rgba(255,138,43,.24)!important}</style>';
+  const cleanupScript=`<script id="tf-v100-cleanup">(function(){try{if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){try{var u=(r.active&&r.active.scriptURL)||(r.waiting&&r.waiting.scriptURL)||(r.installing&&r.installing.scriptURL)||'';if(u.indexOf('taskflow-sw.js')!==-1)r.unregister();}catch(_){}});}).catch(function(){});}if('caches' in window)caches.delete('taskflow-json-export-v1').catch(function(){});}catch(_){}})();<\/script>`;
   async function boot(){
     bootEl.classList.remove('error');retryEl.disabled=true;detailEl.textContent='';msgEl.textContent='Descargando TaskFlow…';
     try{
@@ -47,30 +60,18 @@
       const digest=hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload)));
       if(digest!==expectedHash)throw new Error('Integridad inválida: '+digest.slice(0,16));
       if(typeof DecompressionStream!=='function')throw new Error('DecompressionStream no disponible. Actualiza Chrome/Android System WebView.');
-      const bin=atob(payload),bytes=new Uint8Array(bin.length);
-      for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+      const bin=atob(payload),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
       const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
       let html=await new Response(stream).text();
       if(html.length<600000||!html.includes('<html')||!html.includes('TaskFlow'))throw new Error('Contenido reconstruido inválido');
       msgEl.textContent='Aplicando configuración…';
-      // Importación y exportación retiradas. Eliminar anuncios enlaza a AppCreator24.
       html=html.replace(/<button\b[^>]*\bid=["']btnImportRoutineJSON["'][\s\S]*?<\/button>/i,'');
       html=html.replace(/<input\b[^>]*\bid=["']routineJsonImportInput["'][^>]*>/i,'');
-      const noAdsButton=`<button class="quick-action-btn" id="btnNoAds" type="button" aria-label="Eliminar anuncios" onclick="window.location.href='http://action_search';">
-          <span class="quick-action-icon noads" aria-hidden="true">
-            <svg class="tf-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="3"/>
-              <circle cx="8" cy="10" r="1.5"/>
-              <path d="M12 9h5M12 12h4M6 15h11"/>
-              <path d="M4 4l16 16"/>
-            </svg>
-          </span>
-          <span>Eliminar anuncios</span>
-        </button>`;
       html=html.replace(/<button\b[^>]*\bid=["']btnExportRoutineJSON["'][\s\S]*?<\/button>/i,noAdsButton);
+      html=html.replace(/function handleNoAdsAction\s*\([^)]*\)\s*\{[\s\S]*?\n\s*\}/,`function handleNoAdsAction(event){if(event&&typeof event.preventDefault==='function')event.preventDefault();window.location.href='http://action_search';}`);
+      html=html.replace(/if\(qaNoAds\)qaNoAds\.onclick=handleNoAdsAction;/,`if(qaNoAds)qaNoAds.onclick=handleNoAdsAction;`);
       html=html.replace(/http:\/\/action_noads/g,'http://action_search');
-      const noTransferStyle='<style id="tf-no-transfer-ui">.tf-v91-actions-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.tf-v91-actions-grid .quick-action-btn{width:100%!important;max-width:none!important}.tf-v91-actions-grid .quick-action-icon.noads{color:#ff9b5a!important;background:rgba(255,138,43,.12)!important;border:1px solid rgba(255,138,43,.24)!important}</style>';
-      if(html.includes('</head>'))html=html.replace('</head>',noTransferStyle+'</head>');
+      if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+'</head>');
       document.open();document.write(html);document.close();
     }catch(error){
       console.error('TaskFlow boot error:',error);bootEl.classList.add('error');msgEl.textContent='No se pudo iniciar TaskFlow. Toca Reintentar.';detailEl.textContent=String(error&&error.message?error.message:error);retryEl.disabled=false;
