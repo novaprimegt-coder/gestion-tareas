@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "app": "NovaPrime GT",
+  "version": "11.24",
+  "ref": "3ac4e828e59ad126181652dde5c2bf762ac40c6a",
+  "partsBase": "novaprime-gt-app/public/releases/v11.24/parts19",
+  "parts": [
+    "p00.txt", "p01.txt", "p02.txt", "p03.txt", "p04.txt", "p05.txt", "p06.txt", "p07.txt", "p08.txt", "p09.txt",
+    "p10.txt", "p11.txt", "p12.txt", "p13.txt", "p14.txt", "p15.txt", "p16.txt", "p17.txt", "p18.txt", "p19.txt",
+    "p20.txt", "p21.txt", "p22.txt", "p23.txt", "p24.txt", "p25.txt", "p26.txt", "p27.txt", "p28.txt"
+  ],
+  "partBytes": [
+    19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000,
+    19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000,
+    19000, 19000, 19000, 19000, 19000, 19000, 19000, 19000, 18452
+  ],
+  "base64Bytes": 550452,
+  "gzipBytes": 412839,
+  "gzipSha256": "22b2c1ee90f891a5d257662728cc9ba5dcb1f41fb756bb38d1c6651381e8fdb4",
+  "htmlBytes": 1351125,
+  "htmlSha256": "71c7f0e7faa1ae682cb59615b5e09e7671b67ccfc736eaffaddbeb4bf0933d03",
+  "delivery": "verified-fragments-no-atob"
+}
