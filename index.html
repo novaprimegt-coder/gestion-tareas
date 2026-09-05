@@ -53,28 +53,22 @@
       let html=await new Response(stream).text();
       if(html.length<600000||!html.includes('<html')||!html.includes('TaskFlow'))throw new Error('Contenido reconstruido inválido');
       msgEl.textContent='Aplicando configuración…';
-      // V99 · Importación y exportación retiradas por solicitud del usuario.
+      // Importación y exportación retiradas. Eliminar anuncios enlaza a AppCreator24.
       html=html.replace(/<button\b[^>]*\bid=["']btnImportRoutineJSON["'][\s\S]*?<\/button>/i,'');
       html=html.replace(/<input\b[^>]*\bid=["']routineJsonImportInput["'][^>]*>/i,'');
-
-      // Sustituir Exportar JSON por Eliminar anuncios, conservando el panel original.
-      const noAdsButton=`<button class="quick-action-btn" id="btnNoAds" type="button" aria-label="Eliminar anuncios">
+      const noAdsButton=`<button class="quick-action-btn" id="btnNoAds" type="button" aria-label="Eliminar anuncios" onclick="window.location.href='http://action_search';">
           <span class="quick-action-icon noads" aria-hidden="true">
             <svg class="tf-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 10v4c0 1.1.9 2 2 2h2l7 3V5L8 8H6c-1.1 0-2 .9-2 2Z"/>
-              <path d="M8 16l1.2 4h2.3l-1.2-4"/>
-              <path d="M18 9c.7.8 1 1.8 1 3s-.3 2.2-1 3"/>
-              <path d="M3 3l18 18"/>
+              <rect x="3" y="5" width="18" height="14" rx="3"/>
+              <circle cx="8" cy="10" r="1.5"/>
+              <path d="M12 9h5M12 12h4M6 15h11"/>
+              <path d="M4 4l16 16"/>
             </svg>
           </span>
           <span>Eliminar anuncios</span>
         </button>`;
       html=html.replace(/<button\b[^>]*\bid=["']btnExportRoutineJSON["'][\s\S]*?<\/button>/i,noAdsButton);
-
-      // AppCreator24 intercepta esta URL interna para la acción correspondiente.
       html=html.replace(/http:\/\/action_noads/g,'http://action_search');
-
-      // Dos acciones rápidas, centradas y simétricas: Políticas + Eliminar anuncios.
       const noTransferStyle='<style id="tf-no-transfer-ui">.tf-v91-actions-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.tf-v91-actions-grid .quick-action-btn{width:100%!important;max-width:none!important}.tf-v91-actions-grid .quick-action-icon.noads{color:#ff9b5a!important;background:rgba(255,138,43,.12)!important;border:1px solid rgba(255,138,43,.24)!important}</style>';
       if(html.includes('</head>'))html=html.replace('</head>',noTransferStyle+'</head>');
       document.open();document.write(html);document.close();
