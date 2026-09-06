@@ -16,7 +16,7 @@
 <div class="boot" id="boot"><div class="card">
   <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14v12H5z"/><path d="M8 9h8M8 13h5"/><path d="m16 16 1.5 1.5L20 15"/></svg></div>
   <div class="logo">TaskFlow</div>
-  <div class="version">V101 · desplazamiento estable</div>
+  <div class="version">V102 · iconos y desplazamiento estable</div>
   <div class="msg" id="msg">Preparando el sistema…</div>
   <div class="bar"><i></i></div>
   <button class="retry" id="retry" type="button">Reintentar</button>
@@ -48,7 +48,6 @@
       <span>Eliminar anuncios</span>
     </a>`;
   const injectedStyle=`<style id="tf-v101-actions-scroll">
-/* V101 · Menú y desplazamiento vertical reforzado para navegador y Android WebView. */
 .tf-v91-actions-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
 .tf-v91-actions-grid .quick-action-btn{width:100%!important;max-width:none!important;text-decoration:none!important}
 .tf-v91-actions-grid .quick-action-icon.noads{color:#ff9b5a!important;background:rgba(255,138,43,.12)!important;border:1px solid rgba(255,138,43,.24)!important}
@@ -56,83 +55,36 @@ html,body,.wrap{touch-action:pan-y!important;overscroll-behavior-y:auto!importan
 html{overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
 body{overflow-x:hidden!important;overflow-y:visible!important;min-height:100%!important}
 .wrap{height:auto!important;min-height:100%!important;overflow:visible!important;padding-bottom:max(118px,calc(34px + env(safe-area-inset-bottom)))!important}
-.window-container.open:not(.rank-modal):not(.mentalist-modal){
-  position:fixed!important;inset:0!important;width:100%!important;height:100vh!important;height:100dvh!important;max-height:100dvh!important;
-  overflow-x:hidden!important;overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;
-  overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;scroll-behavior:auto!important;
-  padding-bottom:max(96px,calc(22px + env(safe-area-inset-bottom)))!important;box-sizing:border-box!important;
-}
-.window-container.open:not(.rank-modal):not(.mentalist-modal)>.window-content{
-  height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;overflow-x:hidden!important;
-  touch-action:pan-y!important;overscroll-behavior-y:auto!important;
-  margin-top:8px!important;margin-bottom:max(118px,calc(34px + env(safe-area-inset-bottom)))!important;
-}
+.window-container.open:not(.rank-modal):not(.mentalist-modal){position:fixed!important;inset:0!important;width:100%!important;height:100vh!important;height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;scroll-behavior:auto!important;padding-bottom:max(96px,calc(22px + env(safe-area-inset-bottom)))!important;box-sizing:border-box!important}
+.window-container.open:not(.rank-modal):not(.mentalist-modal)>.window-content{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;overflow-x:hidden!important;touch-action:pan-y!important;overscroll-behavior-y:auto!important;margin-top:8px!important;margin-bottom:max(118px,calc(34px + env(safe-area-inset-bottom)))!important}
 .window-container.open:not(.rank-modal):not(.mentalist-modal)>.window-content *{overscroll-behavior-y:auto}
 .window-container.store-modal.open{overflow-y:scroll!important;padding-bottom:max(96px,calc(22px + env(safe-area-inset-bottom)))!important}
 .window-container.store-modal.open .window-content.store-mode.v79-store-mode{margin-bottom:max(118px,calc(34px + env(safe-area-inset-bottom)))!important}
 .side-menu.open,.policy-page.open{overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior-y:contain!important;padding-bottom:max(106px,calc(30px + env(safe-area-inset-bottom)))!important}
-.rank-scroll-area,.v96-mentalist-scroll,.v97-routine-scroll,.tf-icon-catalog-body{
-  overflow-x:hidden!important;overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;
-  overscroll-behavior-y:contain!important;scroll-behavior:auto!important;
-}
-/* Catálogo de iconos: el cuerpo es el dueño físico del scroll. */
-.tf-icon-sheet{
-  position:fixed!important;top:max(50px,env(safe-area-inset-top))!important;right:7px!important;left:7px!important;
-  bottom:max(94px,calc(70px + env(safe-area-inset-bottom)))!important;height:auto!important;max-height:none!important;
-  grid-template-rows:auto auto auto minmax(0,1fr)!important;align-content:stretch!important;overflow:hidden!important;touch-action:pan-y!important;
-}
-.tf-icon-catalog-body{
-  min-height:0!important;height:auto!important;max-height:none!important;padding:2px 2px max(34px,env(safe-area-inset-bottom))!important;
-  scroll-padding-bottom:36px!important;scrollbar-gutter:stable!important;
-}
+.rank-scroll-area,.v96-mentalist-scroll,.v97-routine-scroll,.tf-icon-catalog-body{overflow-x:hidden!important;overflow-y:scroll!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior-y:contain!important;scroll-behavior:auto!important}
+.tf-icon-sheet{position:fixed!important;top:max(50px,env(safe-area-inset-top))!important;right:7px!important;left:7px!important;bottom:max(94px,calc(70px + env(safe-area-inset-bottom)))!important;height:auto!important;max-height:none!important;grid-template-rows:auto auto auto minmax(0,1fr)!important;align-content:stretch!important;overflow:hidden!important;touch-action:pan-y!important}
+.tf-icon-catalog-body{min-height:0!important;height:auto!important;max-height:none!important;padding:2px 2px max(34px,env(safe-area-inset-bottom))!important;scroll-padding-bottom:36px!important;scrollbar-gutter:stable!important}
 .tf-icon-groups,.tf-icon-group,.tf-icon-grid{min-height:min-content!important;align-content:start!important}
 .tf-icon-option,.tf-icon-option *{touch-action:pan-y!important}
 .tf-icon-option-mark,.tf-icon-option-mark svg{overflow:visible!important}
 .tf-icon-option-mark svg{display:block!important;width:100%!important;height:100%!important;max-width:22px!important;max-height:22px!important;margin:auto!important}
-@media(max-width:620px){
-  .tf-icon-sheet{top:max(48px,env(safe-area-inset-top))!important;bottom:max(98px,calc(74px + env(safe-area-inset-bottom)))!important}
-  .tf-icon-catalog-body{padding-bottom:max(40px,env(safe-area-inset-bottom))!important}
-}
+@media(max-width:620px){.tf-icon-sheet{top:max(48px,env(safe-area-inset-top))!important;bottom:max(98px,calc(74px + env(safe-area-inset-bottom)))!important}.tf-icon-catalog-body{padding-bottom:max(40px,env(safe-area-inset-bottom))!important}}
+body>.tf-icon-sheet.tf-v102-detached-open{display:grid!important;position:fixed!important;top:max(12px,env(safe-area-inset-top))!important;right:8px!important;bottom:max(82px,calc(58px + env(safe-area-inset-bottom)))!important;left:8px!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;grid-template-rows:auto auto auto minmax(0,1fr)!important;align-content:stretch!important;overflow:hidden!important;z-index:2147483000!important;isolation:isolate!important;border-radius:18px!important;box-shadow:0 26px 90px rgba(0,0,0,.72)!important}
+body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-catalog-body{min-height:0!important;height:100%!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior-y:contain!important;padding:4px 2px max(44px,env(safe-area-inset-bottom))!important;scroll-padding-bottom:52px!important}
+body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-groups,body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-group,body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-grid{position:relative!important;z-index:1!important;visibility:visible!important;opacity:1!important}
+body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-grid{display:grid!important}
+body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option-mark,body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option-mark svg{visibility:visible!important;opacity:1!important}
+@media(max-width:620px){body>.tf-icon-sheet.tf-v102-detached-open{top:max(8px,env(safe-area-inset-top))!important;right:6px!important;left:6px!important;bottom:max(78px,calc(56px + env(safe-area-inset-bottom)))!important;border-radius:16px!important}body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important}body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option{min-height:78px!important}body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option-mark{width:40px!important;height:40px!important}body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-option-mark svg{width:22px!important;height:22px!important}}
+@media(max-width:365px){body>.tf-icon-sheet.tf-v102-detached-open .tf-icon-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 </style>`;
   const cleanupScript=`<script id="tf-v100-cleanup">(function(){try{if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){try{var u=(r.active&&r.active.scriptURL)||(r.waiting&&r.waiting.scriptURL)||(r.installing&&r.installing.scriptURL)||'';if(u.indexOf('taskflow-sw.js')!==-1)r.unregister();}catch(_){}});}).catch(function(){});}if('caches' in window)caches.delete('taskflow-json-export-v1').catch(function(){});}catch(_){}})();<\/script>`;
-  const scrollBridgeScript=`<script id="tf-v101-scroll-bridge">(function(){
-    'use strict';
-    if(window.__tfV101ScrollBridge)return;window.__tfV101ScrollBridge=true;
-    var active=false,locked=false,startX=0,startY=0,lastY=0,lastT=0,velocity=0,owner=null,raf=0;
-    function canScroll(el){return !!el&&el.scrollHeight>el.clientHeight+2;}
-    function scrollOwner(target){
-      if(!target)return document.scrollingElement||document.documentElement;
-      var iconSheet=target.closest&&target.closest('.tf-icon-sheet');
-      if(iconSheet){var iconBody=iconSheet.querySelector('.tf-icon-catalog-body');if(canScroll(iconBody))return iconBody;}
-      var direct=target.closest&&target.closest('.rank-scroll-area,.v96-mentalist-scroll,.v97-routine-scroll,.policy-page.open,.side-menu.open,.window-container.open');
-      if(direct&&canScroll(direct))return direct;
-      return document.scrollingElement||document.documentElement;
-    }
-    function maxScroll(el){return Math.max(0,(el.scrollHeight||0)-(el.clientHeight||0));}
-    function setScroll(el,value){var m=maxScroll(el);var v=Math.max(0,Math.min(m,value));if(el===document.scrollingElement||el===document.documentElement||el===document.body){window.scrollTo(0,v);}else{el.scrollTop=v;}return v;}
-    function getScroll(el){if(el===document.scrollingElement||el===document.documentElement||el===document.body)return window.scrollY||document.documentElement.scrollTop||document.body.scrollTop||0;return el.scrollTop||0;}
-    function stopInertia(){if(raf){cancelAnimationFrame(raf);raf=0;}}
-    function inertia(){
-      if(!owner||Math.abs(velocity)<0.08){raf=0;return;}
-      var before=getScroll(owner),after=setScroll(owner,before+velocity*16);
-      if(after===before){velocity=0;raf=0;return;}
-      velocity*=0.92;raf=requestAnimationFrame(inertia);
-    }
-    document.addEventListener('touchstart',function(e){
-      if(!e.touches||e.touches.length!==1)return;stopInertia();active=true;locked=false;owner=scrollOwner(e.target);startX=e.touches[0].clientX;startY=lastY=e.touches[0].clientY;lastT=performance.now();velocity=0;
-    },{capture:true,passive:true});
-    document.addEventListener('touchmove',function(e){
-      if(!active||!owner||!e.touches||e.touches.length!==1)return;
-      var x=e.touches[0].clientX,y=e.touches[0].clientY,dx=x-startX,dy=y-startY;
-      if(!locked){if(Math.abs(dy)<6&&Math.abs(dx)<6)return;if(Math.abs(dx)>Math.abs(dy)*1.15){active=false;return;}locked=true;}
-      var now=performance.now(),dt=Math.max(8,now-lastT),delta=lastY-y;lastY=y;lastT=now;
-      var before=getScroll(owner),after=setScroll(owner,before+delta);velocity=(after-before)/dt;
-      if(e.cancelable)e.preventDefault();
-    },{capture:true,passive:false});
-    function finish(){if(!active)return;active=false;if(locked&&owner&&Math.abs(velocity)>0.08){velocity*=18;raf=requestAnimationFrame(inertia);}else{owner=null;}}
-    document.addEventListener('touchend',finish,{capture:true,passive:true});
-    document.addEventListener('touchcancel',function(){active=false;locked=false;owner=null;stopInertia();},{capture:true,passive:true});
-  })();<\/script>`;
+  const scrollBridgeScript=`<script id="tf-v101-scroll-bridge">(function(){'use strict';if(window.__tfV101ScrollBridge)return;window.__tfV101ScrollBridge=true;var active=false,locked=false,startX=0,startY=0,lastY=0,lastT=0,velocity=0,owner=null,raf=0;function canScroll(el){return !!el&&el.scrollHeight>el.clientHeight+2;}function scrollOwner(target){if(!target)return document.scrollingElement||document.documentElement;var iconSheet=target.closest&&target.closest('.tf-icon-sheet');if(iconSheet){var iconBody=iconSheet.querySelector('.tf-icon-catalog-body');if(canScroll(iconBody))return iconBody;}var direct=target.closest&&target.closest('.rank-scroll-area,.v96-mentalist-scroll,.v97-routine-scroll,.policy-page.open,.side-menu.open,.window-container.open');if(direct&&canScroll(direct))return direct;return document.scrollingElement||document.documentElement;}function maxScroll(el){return Math.max(0,(el.scrollHeight||0)-(el.clientHeight||0));}function setScroll(el,value){var m=maxScroll(el);var v=Math.max(0,Math.min(m,value));if(el===document.scrollingElement||el===document.documentElement||el===document.body){window.scrollTo(0,v);}else{el.scrollTop=v;}return v;}function getScroll(el){if(el===document.scrollingElement||el===document.documentElement||el===document.body)return window.scrollY||document.documentElement.scrollTop||document.body.scrollTop||0;return el.scrollTop||0;}function stopInertia(){if(raf){cancelAnimationFrame(raf);raf=0;}}function inertia(){if(!owner||Math.abs(velocity)<0.08){raf=0;return;}var before=getScroll(owner),after=setScroll(owner,before+velocity*16);if(after===before){velocity=0;raf=0;return;}velocity*=0.92;raf=requestAnimationFrame(inertia);}document.addEventListener('touchstart',function(e){if(!e.touches||e.touches.length!==1)return;stopInertia();active=true;locked=false;owner=scrollOwner(e.target);startX=e.touches[0].clientX;startY=lastY=e.touches[0].clientY;lastT=performance.now();velocity=0;},{capture:true,passive:true});document.addEventListener('touchmove',function(e){if(!active||!owner||!e.touches||e.touches.length!==1)return;var x=e.touches[0].clientX,y=e.touches[0].clientY,dx=x-startX,dy=y-startY;if(!locked){if(Math.abs(dy)<6&&Math.abs(dx)<6)return;if(Math.abs(dx)>Math.abs(dy)*1.15){active=false;return;}locked=true;}var now=performance.now(),dt=Math.max(8,now-lastT),delta=lastY-y;lastY=y;lastT=now;var before=getScroll(owner),after=setScroll(owner,before+delta);velocity=(after-before)/dt;if(e.cancelable)e.preventDefault();},{capture:true,passive:false});function finish(){if(!active)return;active=false;if(locked&&owner&&Math.abs(velocity)>0.08){velocity*=18;raf=requestAnimationFrame(inertia);}else{owner=null;}}document.addEventListener('touchend',finish,{capture:true,passive:true});document.addEventListener('touchcancel',function(){active=false;locked=false;owner=null;stopInertia();},{capture:true,passive:true});})();<\/script>`;
+  const iconPortalCloseOld="function closeCatalog(){wrap.classList.remove('open');search.value='';renderNav();render('');}";
+  const iconPortalCloseNew="function closeCatalog(){wrap.classList.remove('open');sheet.classList.remove('tf-v102-detached-open');sheet.style.removeProperty('display');search.value='';renderNav();render('');if(sheet.parentNode===document.body)wrap.appendChild(sheet);if(window.__tfActiveIconSheet===sheet){window.__tfActiveIconSheet=null;window.__tfActiveIconWrap=null;}}";
+  const iconPortalOpenOld="button.onclick=()=>{\n                    const opening=!wrap.classList.contains('open');\n                    if(opening){document.querySelectorAll('.tf-icon-picker.open').forEach(el=>{if(el!==wrap)el.classList.remove('open');});syncActiveGroupToSelection();renderNav();render('');wrap.classList.add('open');body.scrollTop=0;}\n                    else closeCatalog();\n                };";
+  const iconPortalOpenNew="button.onclick=()=>{\n                    const opening=!wrap.classList.contains('open');\n                    if(opening){\n                        if(window.__tfActiveIconSheet&&window.__tfActiveIconSheet!==sheet){const oldSheet=window.__tfActiveIconSheet,oldWrap=window.__tfActiveIconWrap;try{oldSheet.classList.remove('tf-v102-detached-open');oldSheet.style.removeProperty('display');if(oldWrap){oldWrap.classList.remove('open');oldWrap.appendChild(oldSheet);}}catch(_){}}\n                        syncActiveGroupToSelection();renderNav();render('');wrap.classList.add('open');\n                        document.body.appendChild(sheet);sheet.classList.add('tf-v102-detached-open');sheet.style.display='grid';body.scrollTop=0;\n                        window.__tfActiveIconSheet=sheet;window.__tfActiveIconWrap=wrap;\n                    }else closeCatalog();\n                };";
+  const iconPortalGuard=`<script id="tf-v102-icon-portal-guard">(function(){if(window.__tfV102IconPortalGuard)return;window.__tfV102IconPortalGuard=true;document.addEventListener('keydown',function(e){if(e.key==='Escape'&&window.__tfActiveIconSheet){var s=window.__tfActiveIconSheet,w=window.__tfActiveIconWrap;try{s.classList.remove('tf-v102-detached-open');s.style.removeProperty('display');if(w){w.classList.remove('open');w.appendChild(s);}}catch(_){}window.__tfActiveIconSheet=null;window.__tfActiveIconWrap=null;}},true);var mo=new MutationObserver(function(){var w=window.__tfActiveIconWrap,s=window.__tfActiveIconSheet;if(w&&s&&!w.isConnected){try{s.remove();}catch(_){}window.__tfActiveIconSheet=null;window.__tfActiveIconWrap=null;}});mo.observe(document.documentElement,{childList:true,subtree:true});})();<\/script>`;
   async function boot(){
     bootEl.classList.remove('error');retryEl.disabled=true;detailEl.textContent='';msgEl.textContent='Descargando TaskFlow…';
     try{
@@ -155,11 +107,11 @@ body{overflow-x:hidden!important;overflow-y:visible!important;min-height:100%!im
       html=html.replace(/function handleNoAdsAction\s*\([^)]*\)\s*\{[\s\S]*?\n\s*\}/,`function handleNoAdsAction(event){if(event&&typeof event.preventDefault==='function')event.preventDefault();window.location.href='http://action_noads';}`);
       html=html.replace(/if\(qaNoAds\)qaNoAds\.onclick=handleNoAdsAction;/,`if(qaNoAds)qaNoAds.onclick=handleNoAdsAction;`);
       html=html.replace(/http:\/\/action_search/g,'http://action_noads');
-      if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+scrollBridgeScript+'</head>');
+      if(!html.includes(iconPortalCloseOld)||!html.includes(iconPortalOpenOld))throw new Error('No se pudo activar el selector de iconos V102.');
+      html=html.replace(iconPortalCloseOld,iconPortalCloseNew).replace(iconPortalOpenOld,iconPortalOpenNew);
+      if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+scrollBridgeScript+iconPortalGuard+'</head>');
       document.open();document.write(html);document.close();
-    }catch(error){
-      console.error('TaskFlow boot error:',error);bootEl.classList.add('error');msgEl.textContent='No se pudo iniciar TaskFlow. Toca Reintentar.';detailEl.textContent=String(error&&error.message?error.message:error);retryEl.disabled=false;
-    }
+    }catch(error){console.error('TaskFlow boot error:',error);bootEl.classList.add('error');msgEl.textContent='No se pudo iniciar TaskFlow. Toca Reintentar.';detailEl.textContent=String(error&&error.message?error.message:error);retryEl.disabled=false;}
   }
   retryEl.addEventListener('click',boot);boot();
 })();
