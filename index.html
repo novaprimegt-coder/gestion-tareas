@@ -11,7 +11,7 @@
 <style>*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050914;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.boot{min-height:100dvh;display:grid;place-items:center;padding:24px}.card{width:min(420px,100%);text-align:center}.logo{font-size:34px;font-weight:900;background:linear-gradient(90deg,#42e1d1,#55d6c8,#ff8a2b);-webkit-background-clip:text;background-clip:text;color:transparent}.sub{margin-top:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8191ad;font-weight:800}.msg{margin-top:18px;color:#a7b2c5;font-size:14px}.bar{height:5px;border-radius:999px;background:#111a2b;overflow:hidden;margin:22px auto 0;max-width:300px}.bar i{display:block;height:100%;width:38%;background:linear-gradient(90deg,#40dfd0,#ff8a2b);animation:m .9s ease-in-out infinite alternate}@keyframes m{from{transform:translateX(-15%)}to{transform:translateX(180%)}}.err{margin-top:14px;color:#ff8b9a;font-size:11px;display:none}.retry{display:none;margin:16px auto 0;border:1px solid rgba(75,226,212,.3);border-radius:12px;padding:10px 16px;background:#12323a;color:#55e1d3;font-weight:800}</style>
 </head>
 <body>
-<div class="boot"><div class="card"><div class="logo">TaskFlow</div><div class="sub">V104 · 50/30/20</div><div class="msg" id="m">Preparando el sistema…</div><div class="bar" id="b"><i></i></div><div class="err" id="e"></div><button class="retry" id="r" type="button">Reintentar</button></div></div>
+<div class="boot"><div class="card"><div class="logo">TaskFlow</div><div class="sub">V105 · desplazamiento táctil</div><div class="msg" id="m">Preparando el sistema…</div><div class="bar" id="b"><i></i></div><div class="err" id="e"></div><button class="retry" id="r" type="button">Reintentar</button></div></div>
 <script>
 (()=>{
 'use strict';
@@ -19,15 +19,15 @@ const msg=document.getElementById('m'),err=document.getElementById('e'),bar=docu
 async function start(){
   err.style.display='none';retry.style.display='none';bar.style.display='block';msg.textContent='Cargando TaskFlow…';
   try{
-    const res=await fetch('./taskflow-loader-v102.html?v=104-20260906',{cache:'no-store'});
+    const res=await fetch('./taskflow-loader-v102.html?v=105-20260906',{cache:'no-store'});
     if(!res.ok)throw new Error('No se pudo cargar la base de TaskFlow ('+res.status+')');
     let html=await res.text();
     const headNeedle="if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+scrollBridgeScript+iconPortalGuard+'</head>');";
-    const headFix="if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+scrollBridgeScript+iconPortalGuard+'<link rel=\"stylesheet\" href=\"./taskflow-503020.css?v=104-20260906\">'+'</head>');";
+    const headFix="if(html.includes('</head>'))html=html.replace('</head>',injectedStyle+cleanupScript+'<script src=\"./taskflow-touch-v105.js?v=105-20260906\"><\\/script>'+scrollBridgeScript+iconPortalGuard+'<link rel=\"stylesheet\" href=\"./taskflow-503020.css?v=105-20260906\">'+'</head>');";
     const writeNeedle='document.open();document.write(html);document.close();';
-    const writeFix="if(html.includes('</body>'))html=html.replace('</body>','<script src=\"./taskflow-503020.js?v=104-20260906\"><\\/script><script src=\"./taskflow-503020-inputformat.js?v=104-20260906\"><\\/script></body>');document.open();document.write(html);document.close();";
+    const writeFix="if(html.includes('</body>'))html=html.replace('</body>','<script src=\"./taskflow-503020.js?v=105-20260906\"><\\/script><script src=\"./taskflow-503020-inputformat.js?v=105-20260906\"><\\/script></body>');document.open();document.write(html);document.close();";
     if(!html.includes(headNeedle)||!html.includes(writeNeedle))throw new Error('La base publicada no coincide con la versión esperada.');
-    html=html.replace('V102 · iconos y desplazamiento estable','V104 · presupuesto 50/30/20').replace(headNeedle,headFix).replace(writeNeedle,writeFix);
+    html=html.replace('V102 · iconos y desplazamiento estable','V105 · desplazamiento táctil').replace(headNeedle,headFix).replace(writeNeedle,writeFix);
     document.open();document.write(html);document.close();
   }catch(ex){console.error(ex);bar.style.display='none';msg.textContent='No se pudo iniciar TaskFlow.';err.textContent=String(ex&&ex.message?ex.message:ex);err.style.display='block';retry.style.display='inline-flex';}
 }
