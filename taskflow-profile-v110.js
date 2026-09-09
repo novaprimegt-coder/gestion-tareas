@@ -9,6 +9,7 @@ const CACHE_PREFIX='taskflow_profile_photo_v1_';
 let activeUid=null;
 let observer=null;
 let enhancing=false;
+let neutralizeQueued=false;
 const $=id=>document.getElementById(id);
 
 function installStyle(){
@@ -44,20 +45,29 @@ function publicMessage(text){
  return t;
 }
 
+function setTextIfChanged(el,text){if(el&&el.textContent!==text)el.textContent=text;}
 function neutralize(){
- const sub=$('tfProfileSubtitle');if(sub)sub.textContent='Cuenta y sincronización';
- const note=document.querySelector('.tf-profile-note');if(note)note.textContent='Tu contraseña no se guarda en TaskFlow. Tu cuenta mantiene tus datos sincronizados de forma segura.';
+ const sub=$('tfProfileSubtitle');setTextIfChanged(sub,'Cuenta y sincronización');
+ const note=document.querySelector('.tf-profile-note');setTextIfChanged(note,'Tu contraseña no se guarda en TaskFlow. Tu cuenta mantiene tus datos sincronizados de forma segura.');
  const state=$('tfProfileState');if(state){const next=publicMessage(state.textContent);if(next!==state.textContent)state.textContent=next;}
  const message=$('tfProfileMessage');if(message){const next=publicMessage(message.textContent);if(next!==message.textContent)message.textContent=next;}
  document.querySelectorAll('.tf-profile-userrow').forEach(row=>{
   const label=row.querySelector('span');
-  if(label&&/uid|firebase/i.test(label.textContent||'')){row.style.display='none';row.setAttribute('aria-hidden','true');}
+  if(label&&/uid|firebase/i.test(label.textContent||'')){
+   if(row.style.display!=='none')row.style.display='none';
+   if(row.getAttribute('aria-hidden')!=='true')row.setAttribute('aria-hidden','true');
+  }
  });
  const root=$('tfProfileOverlay');if(root){
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
   const nodes=[];let n;while((n=walker.nextNode()))nodes.push(n);
   nodes.forEach(node=>{const next=publicMessage(node.nodeValue);if(next!==node.nodeValue)node.nodeValue=next;});
  }
+}
+function queueNeutralize(){
+ if(neutralizeQueued)return;
+ neutralizeQueued=true;
+ requestAnimationFrame(()=>{neutralizeQueued=false;ensurePhotoUi();neutralize();});
 }
 
 function cacheKey(uid){return CACHE_PREFIX+uid;}
@@ -80,7 +90,6 @@ function ensurePhotoUi(){
    $('tfProfilePhotoChange').addEventListener('click',()=>{const i=$('tfProfilePhotoInput');if(i)i.click();});
    $('tfProfilePhotoInput').addEventListener('change',onPhotoSelected);
   }
-  neutralize();
  }finally{enhancing=false;}
 }
 
@@ -185,7 +194,7 @@ function attachAuth(){
 function start(){
  ensurePhotoUi();neutralize();
  const root=$('tfProfileOverlay');
- if(root&&!observer){observer=new MutationObserver(()=>{ensurePhotoUi();neutralize();});observer.observe(root,{subtree:true,childList:true,characterData:true});}
+ if(root&&!observer){observer=new MutationObserver(queueNeutralize);observer.observe(root,{subtree:true,childList:true,characterData:true});}
  attachAuth();
 }
 
