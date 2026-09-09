@@ -23,6 +23,8 @@ let dirty=false;
 let saveTimer=0;
 let syncing=null;
 let initialized=false;
+let remoteUnsubscribe=null;
+let firestoreDb=null;
 let nativeSetItem=Storage.prototype.setItem;
 let nativeRemoveItem=Storage.prototype.removeItem;
 
@@ -36,6 +38,7 @@ function metaKey(uid){return META_PREFIX+uid}
 function readJson(k){try{return JSON.parse(safeGet(k)||'null')}catch(_){return null}}
 function writeJsonNative(k,v){return nativeSet(k,JSON.stringify(v))}
 function now(){return Date.now()}
+function loadScript(src){return new Promise((resolve,reject)=>{if([...document.scripts].some(s=>s.src===src))return resolve();const el=document.createElement('script');el.src=src;el.async=false;el.onload=resolve;el.onerror=()=>reject(new Error('SDK_LOAD_FAILED'));document.head.appendChild(el)})}
 
 function fnv1a(str){let h=0x811c9dc5;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)}return ('00000000'+(h>>>0).toString(16)).slice(-8)}
 function capture(){const values={};let joined='';SOURCE_KEYS.forEach(k=>{const v=safeGet(k)||'';values[k]=v;joined+=k+'\u0000'+v+'\u0001'});return{values,hash:fnv1a(joined),updatedAt:localUpdatedAt()}}
@@ -89,7 +92,7 @@ function installStorageHooks(){if(Storage.prototype.__tfCloudV109)return;Storage
 
 async function syncNow(reason){if(!currentUid)return false;if(syncing)return syncing;syncing=(async()=>{try{await reconcile(currentUid);return true}catch(e){dirty=true;warn(reason||'sync',e);return false}finally{syncing=null}})();return syncing}
 
-async function init(){if(initialized)return true;initialized=true;installStorageHooks();if(!window.TaskFlowFirebase||typeof window.TaskFlowFirebase.initialize!=='function'){warn('TaskFlowFirebase no disponible');return false}await window.TaskFlowFirebase.initialize();let attempts=0;while(!(window.firebase&&window.firebase.auth)&&attempts<30){await sleep(100);attempts++}if(!(window.firebase&&window.firebase.auth)){warn('Firebase Auth SDK no disponible; la sincronización cloud requiere el sitio publicado por HTTPS.');return false}window.firebase.auth().onAuthStateChanged(async user=>{const uid=user&&user.uid||null;if(uid===currentUid)return;currentUid=uid;if(saveTimer){clearTimeout(saveTimer);saveTimer=0}dirty=false;if(!uid){log('sin sesión; sincronización pausada');return}try{await syncNow('auth-state')}catch(e){warn('inicio',e)}});window.addEventListener('online',()=>{if(currentUid&&dirty)syncNow('online')});document.addEventListener('visibilitychange',()=>{if(document.hidden&&currentUid&&dirty)syncNow('background')});window.addEventListener('beforeunload',()=>{if(currentUid&&dirty)syncNow('beforeunload')});return true}
+async function init(){if(initialized)return true;initialized=true;installStorageHooks();if(!window.TaskFlowFirebase||typeof window.TaskFlowFirebase.initialize!=='function'){warn('TaskFlowFirebase no disponible');return false}await window.TaskFlowFirebase.initialize();let attempts=0;while(!(window.firebase&&window.firebase.auth)&&attempts<30){await sleep(100);attempts++}if(!(window.firebase&&window.firebase.auth)){warn('Firebase Auth SDK no disponible; la sincronización cloud requiere el sitio publicado por HTTPS.');return false}try{await loadScript('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore-compat.js');if(window.firebase&&window.firebase.firestore)firestoreDb=window.firebase.firestore()}catch(e){warn('Firestore listener no disponible; se mantiene sincronización por eventos.',e)}window.firebase.auth().onAuthStateChanged(async user=>{const uid=user&&user.uid||null;if(uid===currentUid)return;if(remoteUnsubscribe){try{remoteUnsubscribe()}catch(_){}remoteUnsubscribe=null}currentUid=uid;if(saveTimer){clearTimeout(saveTimer);saveTimer=0}dirty=false;if(!uid){log('sin sesión; sincronización pausada');return}try{await syncNow('auth-state');if(firestoreDb){remoteUnsubscribe=firestoreDb.doc('users/'+uid+'/sync/manifest').onSnapshot(()=>{if(currentUid===uid&&!syncing)syncNow('remote-change')},e=>warn('listener remoto',e))}}catch(e){warn('inicio',e)}});window.addEventListener('online',()=>{if(currentUid)syncNow('online')});window.addEventListener('focus',()=>{if(currentUid)syncNow('focus')});document.addEventListener('visibilitychange',()=>{if(!currentUid)return;if(document.hidden){if(dirty)syncNow('background')}else syncNow('foreground')});window.addEventListener('beforeunload',()=>{if(currentUid&&dirty)syncNow('beforeunload')});return true}
 
 window.TaskFlowCloudSync={initialize:init,syncNow:()=>syncNow('manual'),getUid:()=>currentUid,isDirty:()=>dirty,getBinding:()=>getBound()};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(e=>warn('init',e)),{once:true});else init().catch(e=>warn('init',e));
